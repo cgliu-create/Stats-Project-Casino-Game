@@ -45,7 +45,7 @@ public class Runner {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-	// SlowMode	
+	// SlowMode	!!!!
 		SlowMode run = new SlowMode();
 		boolean playit = true;
 		frame = new JFrame();
@@ -160,7 +160,7 @@ public class Runner {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// can only roll once per trial
-				if(run.getOutcomeofroll() == 0 && run.getAmountbet() != 0 && lblOutcome.getText().equals("Outcome:0")) {
+				if(run.getOutcomeofroll() == 0 && run.getAmountbet() != 0 && lblOutcome.getText().equals("Outcome:0") && !(lblOutcome.getText().equals("Bet:0"))) {
 					int x = run.rollthedice(lbldiceA);
 					int y = run.rollthedice(lbldiceB);
 					boolean z = run.checkrollthedice(x, y);
@@ -281,6 +281,8 @@ public class Runner {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//run.resetgame();		//uncomment to disable changing bet mid-game
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				lblBet.setText("Bet:10");
 				run.setAmountbet(10);
 				if(run.getOutcomeofroll() == 0)
@@ -295,6 +297,8 @@ public class Runner {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//run.resetgame();
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				lblBet.setText("Bet:20");
 				run.setAmountbet(20);
 				if(run.getOutcomeofroll() == 0)
@@ -309,6 +313,8 @@ public class Runner {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//run.resetgame();
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				lblBet.setText("Bet:30");
 				run.setAmountbet(30);
 				if(run.getOutcomeofroll() == 0)
@@ -323,6 +329,8 @@ public class Runner {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//run.resetgame();
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				lblBet.setText("Bet:40");
 				run.setAmountbet(40);
 				if(run.getOutcomeofroll() == 0)
@@ -336,7 +344,9 @@ public class Runner {
 		btn50.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				run.resetgame();
+				//run.resetgame();
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				lblBet.setText("Bet:50");
 				run.setAmountbet(50);
 				if(run.getOutcomeofroll() == 0)
@@ -350,6 +360,8 @@ public class Runner {
 		btnPLAY.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				run.resetgame();
 				lblHello.setText("Now, select a bet");
 				lblBet.setText("Bet:0");
@@ -376,6 +388,9 @@ public class Runner {
 		btnTest.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				//step sound
+				SlowMode sound = new SlowMode();
+				sound.playsound("step.wav");
 				FastMode test = new FastMode();
 				test.fastmodenum(1000000, lblHello);
 			}

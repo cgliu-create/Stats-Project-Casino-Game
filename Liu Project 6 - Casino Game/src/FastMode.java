@@ -22,7 +22,7 @@ public class FastMode {
 		this.report = " Trial:" + this.trial +
 					"\n Bet:" + 10 +
 					"\n Outcome for house:" + (-this.outcome) +
-					"\n Win Percentage for player:" + this.prob +
+					"\n Win Rate for player:" + this.prob +
 					"\n Expected Bread for house per $10 bet:" + (-this.expected) + "\n";
 		System.out.println(report);	
 	}
@@ -36,7 +36,7 @@ public class FastMode {
 		this.report = " Trial:" + this.trial +
 				"\n Bet:" + 10 +
 				"\n Outcome for house:" + (-this.outcome) +
-				"\n Win Percentage for player:" + this.prob +
+				"\n Win Rate for player:" + this.prob +
 				"\n Expected Bread for house per $10 bet:" + (-this.expected) + "\n";
 		System.out.println(report);	
 	}
@@ -47,6 +47,9 @@ public class FastMode {
 		ProbMethods runf = new ProbMethods();
 		// STEP ONE
 			boolean sone = runf.roll2ncheck();
+			if(sone) {
+				// continue
+			}
 			if(!(sone)) {
 				//lose
 				this.recordloss();
@@ -54,6 +57,9 @@ public class FastMode {
 			}
 		// STEP TWO
 			int stwo = runf.drawcardncheck();
+			if(stwo == 1) {
+				// continue
+			}
 			if(stwo == 2) {
 				//win2
 				this.recordwin(2);
@@ -101,7 +107,7 @@ public class FastMode {
 		}
 		String strprob = String.format("%.4f", run.prob);
 		String strexpected = String.format("%.4f", (-run.expected));
-		label.setText("Win Percentage:" + strprob +
+		label.setText("Win Rate:" + strprob +
 		"Expected Bread for house per $10 bet:" + strexpected);
 	}
 	//testing

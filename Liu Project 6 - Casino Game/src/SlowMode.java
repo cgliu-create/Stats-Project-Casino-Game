@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -72,6 +77,7 @@ public class SlowMode {
 // this method checks the status of the game based off the outcome values
 // this is where the rules of the game are implemented
 	public int checkrunslow(boolean play) {
+		// win, lose, step sounds
 		while(play == true) {
 		// STEP ONE
 			int Sone = this.outcomeofroll;
@@ -79,10 +85,11 @@ public class SlowMode {
 				return this.trial;  // no answer
 			}
 			if(Sone == 1) {
-									// you continue
+				this.playsound("step.wav");	// you continue, step sound
 			}
 			if(Sone == 2) {
-				this.recordloss();	// you lose
+				this.playsound("lose.wav");	
+				this.recordloss();	// you lose, lose sound
 				return this.trial + 1;
 			}
 		// STEP TWO
@@ -91,14 +98,16 @@ public class SlowMode {
 				return this.trial;  // no answer
 			}
 			if(Stwo == 1) {
-									// you continue
+				this.playsound("step.wav");	// you continue, step sound
 			}
 			if(Stwo == 2) {
-				this.recordwin(2);	// you win2
+				this.playsound("win.wav");	
+				this.recordwin(2);	// you win2, win sound
 				return this.trial + 1;
 			}
 			if(Stwo == 3) {
-				this.recordloss();	// you lose
+				this.playsound("lose.wav");	
+				this.recordloss();	// you lose, lose sound
 				return this.trial + 1;
 			}
 		// STEP THREE
@@ -107,10 +116,11 @@ public class SlowMode {
 				return this.trial;  // no answer
 			}
 			if(Sthree == 1) {
-									// you continue 
+				this.playsound("step.wav");	// you continue, step sound
 			}
 			if(Sthree == 2) {
-				this.recordloss();	// you lose
+				this.playsound("lose.wav");	
+				this.recordloss();	// you lose, lose sound
 				return this.trial + 1;
 			}
 		// STEP FOUR
@@ -118,11 +128,13 @@ public class SlowMode {
 			if(Sfour == 0) {
 				return this.trial;  // no answer
 			}
-			if(Sfour == 1) {		// you win8
+			if(Sfour == 1) {		// you win8, win sound
+				this.playsound("win.wav");
 				this.recordwin(8);
 				return this.trial + 1;
 			}
-			if(Sfour == 2) {		// you win2
+			if(Sfour == 2) {		// you win2, win sound
+				this.playsound("win.wav");
 				this.recordwin(2);
 				return this.trial + 1;
 			}
@@ -141,7 +153,7 @@ public class SlowMode {
 		this.report = " Trial:" + this.trial +
 					"\n Bet:" + this.amountbet +
 					"\n Outcome for house:" + (-this.outcome) +
-					"\n Win Percentage for player:" + this.prob +
+					"\n Win Rate for player:" + this.prob +
 					"\n Expected Bread for house per $10 bet:" + bread + "\n";
 		System.out.println(report);	
 	}
@@ -156,7 +168,7 @@ public class SlowMode {
 		this.report = " Trial:" + this.trial +
 				"\n Bet:" + this.amountbet +
 				"\n Outcome for house:" + (-this.outcome) +
-				"\n Win Percentage for player:" + this.prob +
+				"\n Win Rate for player:" + this.prob +
 				"\n Expected Bread for house per $10 bet:" + bread + "\n";
 		System.out.println(report);	
 	}
@@ -447,17 +459,33 @@ public class SlowMode {
 		return false;
 		// true = x2 win
 	}
-	/*
-	Creating simple graphics using Google draw:
-	Deck
-	https://docs.google.com/drawings/d/1cwU_Jdj-w7WsCFy6oJQOwpTyoF1qhY04hSA0jpnVdEg/edit?usp=sharing
-	Dice
-	https://docs.google.com/drawings/d/1l3UJPnWWRhGSTYFIEl0zfgY2v-OqXpcGeYml7UDkb_8/edit?usp=sharing
-	Spinner
-	https://docs.google.com/drawings/d/1IlNMG2pKlv1z7CAzVO-YY5nm0ZKi07BZkizy6ThDCLc/edit?usp=sharing
-	Coin
-	https://docs.google.com/drawings/d/1uC9l2c1Q51ae_jJRXS7XOm8YxdvH9zCnsFG5gXZLDfY/edit?usp=sharing
-	 */
-	
-
+/*
+Creating simple graphics using Google draw:
+Deck
+https://docs.google.com/drawings/d/1cwU_Jdj-w7WsCFy6oJQOwpTyoF1qhY04hSA0jpnVdEg/edit?usp=sharing
+Dice
+https://docs.google.com/drawings/d/1l3UJPnWWRhGSTYFIEl0zfgY2v-OqXpcGeYml7UDkb_8/edit?usp=sharing
+Spinner
+https://docs.google.com/drawings/d/1IlNMG2pKlv1z7CAzVO-YY5nm0ZKi07BZkizy6ThDCLc/edit?usp=sharing
+Coin
+https://docs.google.com/drawings/d/1uC9l2c1Q51ae_jJRXS7XOm8YxdvH9zCnsFG5gXZLDfY/edit?usp=sharing
+ */
+	public void playsound(String soundName) {
+		AudioInputStream audioInputStream;
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
