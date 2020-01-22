@@ -1,8 +1,10 @@
+// Christopher Liu
+// P8 AP Compsci
+// this is all the methods for "slow mode"
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -13,7 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class SlowMode {
-
+// all values are specific to this run
+// these values are for the "report"
 	private int totalamountbet;
 	private int totaloutcome;
 	private int amountbet;
@@ -23,26 +26,28 @@ public class SlowMode {
 	private double prob;
 	private double expected;
 	private String report;
-// all the outcomes that are recorded by Runner
+// these are for all the outcomes from Runner
 	private int outcomeofroll;
 	private int outcomeofdraw;	
 	private int outcomeofspin;
 	private int outcomeofflip;
 	
-// set value methods from outside this class
+// set value methods for outside this class
 	public void setTrial(int curTrial) {
 		this.trial = curTrial;
 	}
 	public void setWin() {
 		this.numwin = this.numwin+1;
 	}
-	// resets outcomes per game, play button
 	public void resetgame() {
+		// resets outcomes per game, play button
+		this.setAmountbet(0); // this fixes bug of rolling w/o selecting a bet
 		this.outcomeofroll = 0;
 		this.outcomeofdraw = 0;
 		this.outcomeofspin = 0;
 		this.outcomeofflip = 0;
 	}
+	// these methods set the outcome variables
 	public void setOutcomeofroll(int outcomeofroll) {
 		this.outcomeofroll = outcomeofroll;
 	}
@@ -58,7 +63,7 @@ public class SlowMode {
 	public void setAmountbet(int amountbet) {
 		this.amountbet = amountbet;
 	}
-// get value methods from outside this class
+// get value methods for outside this class
 	public int getOutcomeofroll() {
 		return this.outcomeofroll;
 	}
@@ -178,6 +183,7 @@ public class SlowMode {
 	public int rollthedice(JLabel label) {
 		ProbMethods run = new ProbMethods();
 		int num = run.rolldice();
+		// the folowing updates gui label picture based off number 
 		if (num == 1) {
 			try {
 				BufferedImage one = ImageIO.read(new File("one.jpg"));
@@ -267,6 +273,7 @@ public class SlowMode {
 	public int drawthecard(JLabel label) {
 		ProbMethods run = new ProbMethods();
 		int num = run.drawacard();
+		// the folowing updates gui label picture based off number that is associated with a specific card
 		int spot = num-1;
 		String [] cards = {
 				"sa","s2","s3","s4","s5","s6","s7","s8","s9","s10","sJ","sQ","sK",
@@ -292,6 +299,7 @@ public class SlowMode {
 	public boolean spinthewheel(JLabel label) {
 		ProbMethods run = new ProbMethods();
 		int num = run.spinner();
+		// the folowing updates gui label picture based off number
 			if (num == 1) {
 				try {
 					BufferedImage one = ImageIO.read(new File("spin1.jpg"));
@@ -418,6 +426,7 @@ public class SlowMode {
 	public int flipthecoin(JLabel label) {
 		ProbMethods run = new ProbMethods();
 		int num = run.coinflip();
+		// the folowing updates gui label picture based off number
 		if (num == 1) {
 			try {
 				BufferedImage one = ImageIO.read(new File("heads.jpg"));
@@ -470,8 +479,12 @@ https://docs.google.com/drawings/d/1IlNMG2pKlv1z7CAzVO-YY5nm0ZKi07BZkizy6ThDCLc/
 Coin
 https://docs.google.com/drawings/d/1uC9l2c1Q51ae_jJRXS7XOm8YxdvH9zCnsFG5gXZLDfY/edit?usp=sharing
  */
+//this makes sound
 	public void playsound(String soundName) {
 		AudioInputStream audioInputStream;
+		/* this explains adding sound
+		https://stackoverflow.com/questions/15526255/best-way-to-get-sound-on-button-press-for-a-java-calculator
+		*/
 		try {
 			audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
 			Clip clip = AudioSystem.getClip();
@@ -489,3 +502,4 @@ https://docs.google.com/drawings/d/1uC9l2c1Q51ae_jJRXS7XOm8YxdvH9zCnsFG5gXZLDfY/
 		}
 	}
 }
+//fin

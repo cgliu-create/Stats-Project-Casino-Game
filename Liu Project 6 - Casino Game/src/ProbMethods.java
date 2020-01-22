@@ -1,4 +1,6 @@
-
+// Christopher Liu
+// P8 AP Compsci
+// this is the probability methods that are the basis for steps in the game
 public class ProbMethods {
 	// STEP ONE
 	/*
@@ -7,8 +9,8 @@ public class ProbMethods {
 	Else continue to step 2
 	 */
 	public int rolldice() {
-		
-		int roll = (int)Math.ceil(Math.random()*6);
+		// random integer (1,6)
+		int roll = (int)(Math.random()*6+1);
 		return roll;	
 	}
 	public boolean roll2ncheck(){
@@ -29,8 +31,8 @@ public class ProbMethods {
 	If draw face/ace then continue to step 3
 	 */
 	public int drawacard() {
-		// 1-52
-		int card = (int)Math.ceil(Math.random()*52);
+		// random integer (1,52)
+		int card = (int)(Math.random()*52+1);
 		return card;	
 	}
 	/*
@@ -56,7 +58,6 @@ public class ProbMethods {
 	}
 	public int drawcardncheck(){
 		// 1 = continue, 2 = win x2, 3 = lose 
-		
 		int draw = this.drawacard() - 1; 
 		int value = draw%13;
 		if(value == 0 || value == 10 || value == 11 || value == 12) {
@@ -76,8 +77,8 @@ public class ProbMethods {
 	Else lose
 	 */
 	public int spinner() {
-		// 1 - 10
-		int spin = (int)Math.ceil(Math.random()*10);
+		// random integer (1,10)
+		int spin = (int)(Math.random()*10+1);
 		return spin;	
 	}
 	public boolean checkspinner(int spin) {
@@ -102,7 +103,8 @@ public class ProbMethods {
 	else win 2:1 pay out
 	 */
 	public int coinflip() {
-		int coin = (int)Math.ceil(Math.random()*2);
+		// random integer (1,2)
+		int coin = (int)(Math.random()*2+1);
 		return coin;	
 		// 1 = heads and 2 = tails
 	}
@@ -243,3 +245,4 @@ public class ProbMethods {
 	}	
 
 }
+//fin

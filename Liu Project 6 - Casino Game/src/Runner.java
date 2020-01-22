@@ -1,3 +1,6 @@
+// Christopher Liu
+// P8 AP Compsci
+// this is the runner file that sets up the gui
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -12,7 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-
+	// theoretical probability = 0.397
+	// theoretical bread = 0.323
 public class Runner {
 	// created using WindowBuilder wizard
 	private JFrame frame;
@@ -33,19 +37,17 @@ public class Runner {
 			}
 		});
 	}
-
 	/**
 	 * Create the application.
 	 */
 	public Runner() {
 		initialize();
 	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-	// SlowMode	!!!!
+	// SlowMode	
 		SlowMode run = new SlowMode();
 		boolean playit = true;
 		frame = new JFrame();
@@ -53,7 +55,7 @@ public class Runner {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 	
-	// Dice
+	// Dice labels
 		JLabel lbldiceA = new JLabel("diceA");
 		lbldiceA.setBounds(656, 131, 97, 97);
 		frame.getContentPane().add(lbldiceA);
@@ -62,7 +64,7 @@ public class Runner {
 		lbldiceB.setBounds(765, 131, 97, 97);
 		frame.getContentPane().add(lbldiceB);
 		
-	// Cards
+	// Card labels
 		JLabel lbldeckA = new JLabel("deckA");
 		lbldeckA.setBounds(656, 240, 97, 127);
 		frame.getContentPane().add(lbldeckA);
@@ -71,12 +73,12 @@ public class Runner {
 		lbldeckB.setBounds(765, 240, 97, 127);
 		frame.getContentPane().add(lbldeckB);
 	
-	//Spinner
+	//Spinner label
 		JLabel lblSpin = new JLabel("Spin");
 		lblSpin.setBounds(656, 380, 206, 147);
 		frame.getContentPane().add(lblSpin);
 		
-	// Coins
+	// Coins labels
 		JLabel lblcoinB = new JLabel("coinB");
 		lblcoinB.setBounds(736, 539, 77, 77);
 		frame.getContentPane().add(lblcoinB);
@@ -91,6 +93,9 @@ public class Runner {
 	
 	// Sets default image pieces
 		try {
+			/* this explains BufferedImage and ImageIcon, adding images
+			http://www.java2s.com/Tutorials/Java/Graphics_How_to/Image/Display_Image_with_Swing_GUI.htm
+			*/
 			BufferedImage one = ImageIO.read(new File("one.jpg"));
 			ImageIcon o = new ImageIcon(one);
 			Image imgo = o.getImage();
@@ -129,28 +134,28 @@ public class Runner {
 			e.printStackTrace();
 		}
 	// Display for what the player needs to do
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(); // creates a box around label
 		panel.setBorder(new TitledBorder(null, "Console", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(346, 79, 530, 40);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblHello = new JLabel("Welcome to the Road to El Dorado! To start, hit play!");
-		lblHello.setBounds(6, 18, 518, 16);
+		lblHello.setBounds(6, 18, 518, 16); // sets up default message for when application is run for the first time
 		panel.add(lblHello);
 	
 	// Display for bet and outcome
-		JPanel panel_1 = new JPanel();
+		JPanel panel_1 = new JPanel(); // creates box for results labels
 		panel_1.setBorder(new TitledBorder(null, "Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(388, 435, 142, 73);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 	
-		JLabel lblOutcome = new JLabel("Outcome:0");
+		JLabel lblOutcome = new JLabel("Outcome:0"); // sets up default message for Outcome
 		lblOutcome.setBounds(6, 41, 130, 26);
 		panel_1.add(lblOutcome);
 
-		JLabel lblBet = new JLabel("Bet:0");
+		JLabel lblBet = new JLabel("Bet:0"); // sets up default message for Bet
 		lblBet.setBounds(6, 18, 130, 26);
 		panel_1.add(lblBet);
 	
@@ -159,11 +164,11 @@ public class Runner {
 		btnRoll.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// can only roll once per trial
-				if(run.getOutcomeofroll() == 0 && run.getAmountbet() != 0 && lblOutcome.getText().equals("Outcome:0") && !(lblOutcome.getText().equals("Bet:0"))) {
-					int x = run.rollthedice(lbldiceA);
-					int y = run.rollthedice(lbldiceB);
-					boolean z = run.checkrollthedice(x, y);
+				// can only roll if a bet was made + a roll hasn't already been made + game is not finished
+				if(!(lblOutcome.getText().equals("Bet:0")) && run.getOutcomeofroll() == 0 && run.getAmountbet() != 0 && lblOutcome.getText().equals("Outcome:0")) {
+					int x = run.rollthedice(lbldiceA); // dice A
+					int y = run.rollthedice(lbldiceB); // dice B
+					boolean z = run.checkrollthedice(x, y); // outcome value based of dice A and B
 					int outcome = 0;
 					if (z) {
 						outcome = 1;
@@ -171,6 +176,7 @@ public class Runner {
 					if (!(z)) {
 						outcome = 2;
 					}
+					// outcome value changes gui label in "console"
 					if (outcome == 1) {
 						lblHello.setText("Now, draw a card");
 					}
@@ -178,7 +184,9 @@ public class Runner {
 						lblOutcome.setText("Outcome:-"+run.getAmountbet());
 						lblHello.setText("Sorry, you lost. Hit play to play again");
 					}
+					// updates variables in slowmode object
 					run.setOutcomeofroll(outcome);
+					// checks the situation of the game and updates trial number if a game is finished
 					run.setTrial(run.checkrunslow(playit));
 				}
 			}
@@ -190,8 +198,10 @@ public class Runner {
 		btnDraw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				// can only draw if a roll was made + a draw hasn't already been made + game is not finished
 				if(run.getOutcomeofdraw() == 0 && run.getOutcomeofroll() != 0 && lblOutcome.getText().equals("Outcome:0")) {
 					int outcome = run.drawthecard(lbldeckB);
+					// outcome value changes gui label in "console"
 					if (outcome == 1) {
 						lblHello.setText("Now, spin the wheel");
 					}
@@ -204,7 +214,9 @@ public class Runner {
 						lblOutcome.setText("Outcome:-"+run.getAmountbet());
 						lblHello.setText("Sorry, you lost. Hit play to play again");
 					}
+					// updates variables in slowmode object
 					run.setOutcomeofdraw(outcome);
+					// checks the situation of the game and updates trial number if a game is finished
 					run.setTrial(run.checkrunslow(playit));
 				}
 	
@@ -217,8 +229,10 @@ public class Runner {
 		btnSpin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				// can only spin if a draw was made + a spin hasn't already been made + game is not finished
 				if(run.getOutcomeofspin() == 0  && run.getOutcomeofdraw() != 0 && lblOutcome.getText().equals("Outcome:0")) {
 					boolean z = run.spinthewheel(lblSpin);
+					// outcome value changes gui label in "console"
 					int outcome = 0;
 					if (z) {
 						outcome = 1;
@@ -233,7 +247,9 @@ public class Runner {
 						lblOutcome.setText("Outcome:-"+run.getAmountbet());
 						lblHello.setText("Sorry, you lost. Hit play to play again");
 					}
+					// updates variables in slowmode object
 					run.setOutcomeofspin(outcome);
+					// checks the situation of the game and updates trial number if a game is finished
 					run.setTrial(run.checkrunslow(playit));
 				}
 			}
@@ -245,11 +261,13 @@ public class Runner {
 		btnFlip.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				// can only flip if a spin was made + a flip hasn't already been made + game is not finished
 				if(run.getOutcomeofflip() == 0 && run.getOutcomeofspin() != 0 && lblOutcome.getText().equals("Outcome:0")) {
 					int a = run.flipthecoin(lblcoinA);
 					int b = run.flipthecoin(lblcoinB);
 					int c = run.flipthecoin(lblcoinC);
 					boolean z = run.checkflipthecoin(a, b, c);
+					// outcome value changes gui label in "console"
 					int outcome = 0;
 					if (z) {
 						outcome = 1;
@@ -267,7 +285,9 @@ public class Runner {
 						lblHello.setText("Congrats, you win. Hit play to play again");
 						run.setWin();
 					}
+					// updates variables in slowmode object
 					run.setOutcomeofflip(outcome);
+					// checks the situation of the game and updates trial number if a game is finished
 					run.setTrial(run.checkrunslow(playit));
 				}
 			}
@@ -283,8 +303,13 @@ public class Runner {
 				//run.resetgame();		//uncomment to disable changing bet mid-game
 				SlowMode sound = new SlowMode();
 				sound.playsound("step.wav");
+				/* this is where i got the sound files
+				leshylabs.com/apps/sfMaker/
+				*/
 				lblBet.setText("Bet:10");
+				// updates variable in slowmode object
 				run.setAmountbet(10);
+				// changes gui labels
 				if(run.getOutcomeofroll() == 0)
 					lblHello.setText("First, roll the dice");
 			}
@@ -300,7 +325,9 @@ public class Runner {
 				SlowMode sound = new SlowMode();
 				sound.playsound("step.wav");
 				lblBet.setText("Bet:20");
+				// updates variable in slowmode object
 				run.setAmountbet(20);
+				// changes gui labels
 				if(run.getOutcomeofroll() == 0)
 					lblHello.setText("First, roll the dice");
 			}
@@ -316,7 +343,9 @@ public class Runner {
 				SlowMode sound = new SlowMode();
 				sound.playsound("step.wav");
 				lblBet.setText("Bet:30");
+				// updates variable in slowmode object
 				run.setAmountbet(30);
+				// changes gui labels
 				if(run.getOutcomeofroll() == 0)
 					lblHello.setText("First, roll the dice");
 			}
@@ -332,7 +361,9 @@ public class Runner {
 				SlowMode sound = new SlowMode();
 				sound.playsound("step.wav");
 				lblBet.setText("Bet:40");
+				// updates variable in slowmode object
 				run.setAmountbet(40);
+				// changes gui labels
 				if(run.getOutcomeofroll() == 0)
 					lblHello.setText("First, roll the dice");
 			}
@@ -348,7 +379,9 @@ public class Runner {
 				SlowMode sound = new SlowMode();
 				sound.playsound("step.wav");
 				lblBet.setText("Bet:50");
+				// updates variable in slowmode object
 				run.setAmountbet(50);
+				// changes gui labels
 				if(run.getOutcomeofroll() == 0)
 					lblHello.setText("First, roll the dice");
 			}
@@ -366,8 +399,10 @@ public class Runner {
 				lblHello.setText("Now, select a bet");
 				lblBet.setText("Bet:0");
 				lblOutcome.setText("Outcome:0");
+				// resets gui labels
 				BufferedImage cardempty;
 				try {
+				// makes "cards" look like default so it looks "shuffled"
 					cardempty = ImageIO.read(new File("cardempty.jpg"));
 					ImageIcon ce = new ImageIcon(cardempty);
 					Image imgce = ce.getImage();
@@ -392,6 +427,7 @@ public class Runner {
 				SlowMode sound = new SlowMode();
 				sound.playsound("step.wav");
 				FastMode test = new FastMode();
+				// runs fast mode a million times ... heh
 				test.fastmodenum(1000000, lblHello);
 			}
 		});
@@ -402,7 +438,9 @@ public class Runner {
 		try {
 			BufferedImage back = ImageIO.read(new File("instructions.jpg"));
 			ImageIcon b = new ImageIcon(back);
-			
+/* source for background image
+http://www.yorikoito.com/home/background-painting/the-road-to-el-dorado/
+*/
 			JLabel background = new JLabel();
 			background.setBounds(6, 6, 900, 650);
 			frame.getContentPane().add(background);
@@ -415,3 +453,4 @@ public class Runner {
 	
 	}
 }
+//fin

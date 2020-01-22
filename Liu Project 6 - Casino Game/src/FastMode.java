@@ -1,7 +1,11 @@
+// Christopher Liu
+// P8 AP Compsci
+// this is all the methods for "fast mode"
 import javax.swing.JLabel;
 
 public class FastMode {
 	// assume bet = 10
+	// these values are for to the "report"
 	private int totalamountbet;
 	private int totaloutcome;
 	private int outcome;
@@ -100,11 +104,15 @@ public class FastMode {
 			run.trial = run.runfast(true);
 		}
 	}
+	// this method tests multiple games and updates a label
 	public void fastmodenum(int num, JLabel label) {
 		FastMode run = new FastMode();
 		for(int y = 0; y < num; y++) {
 			run.trial = run.runfast(true);
 		}
+		/* this explains how to format a decimal
+		https://www.java67.com/2014/06/how-to-format-float-or-double-number-java-example.html
+		*/
 		String strprob = String.format("%.4f", run.prob);
 		String strexpected = String.format("%.4f", (-run.expected));
 		label.setText("Win Rate:" + strprob +
@@ -119,3 +127,4 @@ public class FastMode {
 		}
 }
 }
+//fin
